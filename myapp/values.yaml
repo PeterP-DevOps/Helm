@@ -1,0 +1,47 @@
+
+frontend:
+  replicaCount: 1
+
+  image:
+    repository: nginx
+    tag: "1.28"
+    pullPolicy: IfNotPresent
+
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 80
+
+backend:
+  replicaCount: 1
+
+  image:
+    repository: wbitt/network-multitool
+    tag: "latest"
+    pullPolicy: Always
+
+  env:
+    HTTP_PORT: "8080"
+    HTTPS_PORT: "8443"
+
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 8080
+
+ingress:
+  enabled: true
+  className: public
+
+  frontend:
+    path: /
+    pathType: Prefix
+
+  backend:
+    path: /api
+    pathType: Prefix
+
+middleware:
+  enabled: true
+  name: backend-strip-api
+  stripPrefix: /api
