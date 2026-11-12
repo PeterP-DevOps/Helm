@@ -10,10 +10,12 @@ spec:
   selector:
     matchLabels:
       app: frontend
+      app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
         app: frontend
+        app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       containers:
         - name: nginx
